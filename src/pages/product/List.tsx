@@ -1,36 +1,27 @@
 import { Button, Stack } from '@mui/material'
 import { trTR } from '@mui/x-data-grid/locales';
-import { DataGrid, GridToolbar, useGridApiContext } from '@mui/x-data-grid'
+import { DataGrid, GridToolbar, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarFilterButton, useGridApiContext } from '@mui/x-data-grid'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
+import { BaseService } from '../../api/baseService';
+import { useBaseQuery } from '../../query/useBaseQuery';
+import { queryClient } from '../../query/queryClient';
 
 
 function List() {
 
-  const [products, setproducts] = useState([])
-  const [isLoad, setisLoad] = useState(true)
+  const { data: products } = useBaseQuery<any>("products")
 
-  // const apiRef = useGridApiContext();
-
-  useEffect(() => {
-    loadProducts()
-  }, [isLoad])
-
-  const loadProducts = () => {
-    axios.get("https://northwind.vercel.app/api/products")
-      .then((response) => {
-        setproducts(response.data)
-      })
-  }
 
 
   const deleteProduct = (item: any) => {
 
     const result = window.confirm("Are you sure you want to delete this product?")
     if (result) {
-      axios.delete(`https://northwind.vercel.app/api/products/${item.id}`)
-        .then((response) => {
-          setisLoad(!isLoad)
+      BaseService.delete(`products/${item.id}`)
+        .then(() => {
+          //refresh the data
+          queryClient.invalidateQueries({ queryKey: ['products'] })
         })
     }
   }
@@ -78,7 +69,7 @@ function List() {
         rows={products}
         columns={columns}
         slots={{
-          toolbar: GridToolbar
+          toolbar: CustomToolBar
         }}
         slotProps={{
           toolbar: {
@@ -98,3 +89,16 @@ function List() {
 }
 
 export default List
+
+
+function CustomToolBar() {
+  return <GridToolbarContainer>
+    <GridToolbarColumnsButton
+      slotProps={{
+        button: { variant: 'outlined' },
+      }
+      }
+    />
+    <GridToolbarFilterButton />
+  </GridToolbarContainer>
+}
