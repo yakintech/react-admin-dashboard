@@ -1,6 +1,6 @@
 import { QueryKey, useQuery, UseQueryOptions } from "@tanstack/react-query"
-import { BaseService } from "../api/baseService"
-import { axiosInstance } from "../api/axiosInstance"
+import { BaseService } from "../config/baseService"
+import { axiosInstance } from "../config/axiosInstance"
 
 
 export const useBaseQuery = <T>(endpoint: string, key?: QueryKey, options?: UseQueryOptions) => {

@@ -11,7 +11,6 @@ export const BaseService = {
         }
     },
     async delete<T>(url: string): Promise<T> {
-        
         try {
             let result = await axiosInstance.delete<T>(url)
             return result.data
@@ -20,5 +19,23 @@ export const BaseService = {
             throw error
         }
         
+    },
+    async post<T>(url: string, data: any): Promise<T> {
+        try {
+            let result = await axiosInstance.post<T>(url, data)
+            return result.data
+        } catch (error) {
+            console.log(`Post Error: ${url}`, error)
+            throw error
+        }
+    },
+    async put<T>(url: string, data: any): Promise<T> {
+        try {
+            let result = await axiosInstance.put<T>(url, data)
+            return result.data
+        } catch (error) {
+            console.log(`Put Error: ${url}`, error)
+            throw error
+        }
     }
 }

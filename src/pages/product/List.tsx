@@ -1,17 +1,14 @@
 import { Button, Stack } from '@mui/material'
 import { trTR } from '@mui/x-data-grid/locales';
 import { DataGrid, GridToolbar, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarFilterButton, useGridApiContext } from '@mui/x-data-grid'
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { BaseService } from '../../api/baseService';
-import { useBaseQuery } from '../../query/useBaseQuery';
-import { queryClient } from '../../query/queryClient';
+import { BaseService } from '../../api/config/baseService';
+import { useBaseQuery } from '../../api/query/useBaseQuery';
+import { queryClient } from '../../api/query/queryClient';
 
 
 function List() {
 
   const { data: products } = useBaseQuery<any>("products")
-
 
 
   const deleteProduct = (item: any) => {
@@ -20,11 +17,12 @@ function List() {
     if (result) {
       BaseService.delete(`products/${item.id}`)
         .then(() => {
-          //refresh the data
           queryClient.invalidateQueries({ queryKey: ['products'] })
         })
     }
   }
+
+  // queryClient.invalidateQueries({ queryKey: ['products'] })
 
   const columns = [
     {
@@ -69,7 +67,7 @@ function List() {
         rows={products}
         columns={columns}
         slots={{
-          toolbar: CustomToolBar
+          toolbar: GridToolbar
         }}
         slotProps={{
           toolbar: {
