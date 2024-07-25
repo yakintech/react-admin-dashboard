@@ -6,7 +6,9 @@ export const CartContext = createContext<CartContextType>({
     addToCart: () => { },
     removeFromCart: () => { },
     emptyCart: () => { },
-    getTotalPrice: () => 0
+    getTotalPrice: () => 0,
+    increaseQuantity: () => { },
+    decreaseQuantity: () => { }
 })
 
 
@@ -25,7 +27,7 @@ export const CartProvider = ({ children }: any) => {
     }
 
     useEffect(() => {
-      
+
         let cart = localStorage.getItem("cart")
         if (cart) {
             setcart(JSON.parse(cart))
@@ -33,7 +35,7 @@ export const CartProvider = ({ children }: any) => {
 
 
     }, [])
-    
+
 
 
     //addToCart, removeFromCart, clearCart gibi fonksiyonlarımızı oluşturuyoruz.
@@ -62,13 +64,41 @@ export const CartProvider = ({ children }: any) => {
         localStorage.setItem("cart", JSON.stringify(filteredCartItems))
     }
 
+    const increaseQuantity = (id: number) => {
+        let cartItem = cart.find(cart => cart.id == id)
+        if (cartItem) {
+            cartItem.quantity = cartItem.quantity! + 1
+            setcart([...cart])
+            localStorage.setItem("cart", JSON.stringify(cart))
+        }
+    }
+
+    const decreaseQuantity = (id: number) => {
+        let cartItem = cart.find(cart => cart.id == id)
+        if (cartItem) {
+            cartItem.quantity = cartItem.quantity! - 1
+
+            if (cartItem.quantity == 0) {
+                let filteredCartItems = cart.filter(cart => cart.id != id)
+                setcart(filteredCartItems)
+                localStorage.setItem("cart", JSON.stringify(filteredCartItems))
+            }
+            else {
+                setcart([...cart])
+                localStorage.setItem("cart", JSON.stringify(cart))
+            }
+
+
+        }
+    }
+
     const emptyCart = () => {
         setcart([])
         localStorage.removeItem("cart")
     }
 
 
-    return <CartContext.Provider value={{ cart, addToCart, removeFromCart, emptyCart, getTotalPrice }}>
+    return <CartContext.Provider value={{ cart, addToCart, removeFromCart, emptyCart, getTotalPrice, increaseQuantity, decreaseQuantity }}>
         {children}
     </CartContext.Provider>
 
@@ -83,6 +113,8 @@ export type CartContextType = {
     removeFromCart: (id: number) => void,
     emptyCart: () => void
     getTotalPrice: () => number
+    increaseQuantity: (id: number) => void
+    decreaseQuantity: (id: number) => void
 }
 
 

@@ -5,7 +5,7 @@ import Divider from '@mui/material/Divider';
 
 function List() {
 
-  const { cart, removeFromCart, getTotalPrice, emptyCart } = useContext(CartContext) as CartContextType
+  const { cart, removeFromCart, getTotalPrice, emptyCart, increaseQuantity, decreaseQuantity } = useContext(CartContext) as CartContextType
 
 
   const remove = (id: number) => {
@@ -25,6 +25,10 @@ function List() {
         cart.map((item: CartItem) => {
           return <Stack key={item.id} justifyContent="space-evenly">
             <div style={{ padding: 20 }}>{item.name} - {item.unitPrice.toFixed(2)} * {item.quantity} = {(item.unitPrice * item.quantity!).toFixed(2)}
+              
+              <Button onClick={() => decreaseQuantity(item.id)}>-</Button>
+              <Button onClick={() => increaseQuantity(item.id)}>+</Button>
+             
               <Button sx={{ marginLeft: 10 }} variant="contained" color="error" onClick={() => remove(item.id)}>Remove</Button>
             </div>
             <Divider />
