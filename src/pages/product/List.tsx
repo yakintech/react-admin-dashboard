@@ -55,19 +55,19 @@ function List() {
       field: "unitPrice",
       headerName: "Price",
       flex: 0.2,
-      renderCell: (params: any) => {
-        let unitPrice = 0
-        if (params.row.unitPrice) {
-          let unitPrice = params.row.unitPrice;
-          if (isNaN(unitPrice)) {
-            unitPrice = 0;
-          }
-          else {
-            unitPrice = parseFloat(unitPrice).toFixed(2);
-          }
-        }
-        return <>{unitPrice}</>
-      }
+      // renderCell: (params: any) => {
+      //   if (params.row.unitPrice) {
+      //     let unitPrice = params.row.unitPrice;
+      //     if (isNaN(unitPrice)) {
+      //       unitPrice = 0;
+      //     }
+      //     else {
+      //       unitPrice = parseFloat(unitPrice).toFixed(2);
+      //       return <>{unitPrice}</>
+      //     }
+      //   }
+      //   return <></>
+      // }
     },
     {
       field: "unitsInStock",
