@@ -5,11 +5,15 @@ import { BaseService } from '../../api/config/baseService';
 import { useBaseQuery } from '../../api/query/useBaseQuery';
 import { queryClient } from '../../api/query/queryClient';
 import { Link } from 'react-router-dom';
+import { useContext } from 'react';
+import { CartContext, CartContextType, CartItem } from '../../context/CartContext';
 
 
 function List() {
 
   const { data: products } = useBaseQuery<any>("products")
+
+  const { addToCart } = useContext(CartContext) as CartContextType
 
 
   const deleteProduct = (item: any) => {
@@ -24,6 +28,17 @@ function List() {
   }
 
   // queryClient.invalidateQueries({ queryKey: ['products'] })
+
+
+  const add = (item: any) => {
+    let newCartItem : CartItem = {
+      id: item.id,
+      name: item.name,
+      unitPrice: item.unitPrice,
+      quantity: 1
+    }
+    addToCart(newCartItem)
+  }
 
   const columns = [
     {
@@ -42,12 +57,12 @@ function List() {
       flex: 0.2,
       renderCell: (params: any) => {
         let unitPrice = 0
-        if(params.row.unitPrice){
+        if (params.row.unitPrice) {
           let unitPrice = params.row.unitPrice;
-          if(isNaN(unitPrice)){
+          if (isNaN(unitPrice)) {
             unitPrice = 0;
           }
-          else{
+          else {
             unitPrice = parseFloat(unitPrice).toFixed(2);
           }
         }
@@ -58,6 +73,14 @@ function List() {
       field: "unitsInStock",
       headerName: "Stock",
       flex: 0.2
+    },
+    {
+      field: "AddToCart",
+      headerName: "Add To Cart",
+      flex: 0.2,
+      renderCell: (params: any) => {
+        return <Button variant="contained" onClick={() => add(params.row)}>Add to Cart</Button>
+      }
     },
     {
       field: "delete",

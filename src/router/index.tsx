@@ -1,8 +1,7 @@
 import { Outlet, useRoutes } from "react-router-dom";
-import List from "../pages/product/List";
-import Add from "../pages/product/Add";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import { productRoutes } from "../pages/product/routes";
+import { cartRoutes } from "../pages/cart/routes";
 
 export const Router = () => {
     let routes = useRoutes([
@@ -14,7 +13,8 @@ export const Router = () => {
                 </DashboardLayout>
           </>,
           children: [
-           ...productRoutes
+           ...productRoutes,
+           ...cartRoutes
           ]
         }
       ])
