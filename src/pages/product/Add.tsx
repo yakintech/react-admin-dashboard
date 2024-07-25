@@ -1,15 +1,27 @@
 import { Autocomplete, Button, TextField } from '@mui/material'
 import { Stack } from '@mui/system'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useBaseQuery } from '../../api/query/useBaseQuery'
 import { BaseService } from '../../api/config/baseService'
 import { useNavigate } from 'react-router-dom'
+import { useBaseMutation } from '../../api/query/useBaseMutation'
+import { useRouter } from '../../hooks/router/useRouter'
 
 function Add() {
 
-  const { data: categories } = useBaseQuery<CategoryModel[]>("categories")
+  const [open, setopen] = useState(false)
 
-  const navigate = useNavigate()
+  const { data: categories } = useBaseQuery<CategoryModel[]>("categories")
+  const { mutate: getAllSuppliers, data: suppliers } = useBaseMutation('suppliers', 'GET')
+
+  
+  useEffect(() => {
+      getAllSuppliers()
+
+  }, [])
+
+
+  const router = useRouter()
 
   const [formData, setformData] = useState({
     name: '',
@@ -29,7 +41,7 @@ function Add() {
     event.preventDefault()
     BaseService.post('products', formData)
       .then(res => {
-        navigate('/products')
+        router.push('/products')
       })
   }
 
@@ -59,6 +71,7 @@ function Add() {
             onChange={handleChange}
           />
         </Stack>
+   
         <Stack>
           <Button type="submit" variant="contained" color="primary">Add</Button>
         </Stack>
