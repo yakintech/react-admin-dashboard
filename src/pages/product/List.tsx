@@ -4,6 +4,7 @@ import { DataGrid, GridToolbar, GridToolbarColumnsButton, GridToolbarContainer, 
 import { BaseService } from '../../api/config/baseService';
 import { useBaseQuery } from '../../api/query/useBaseQuery';
 import { queryClient } from '../../api/query/queryClient';
+import { Link } from 'react-router-dom';
 
 
 function List() {
@@ -40,7 +41,17 @@ function List() {
       headerName: "Price",
       flex: 0.2,
       renderCell: (params: any) => {
-        return <>{params.row.unitPrice.toFixed(2)}</>
+        let unitPrice = 0
+        if(params.row.unitPrice){
+          let unitPrice = params.row.unitPrice;
+          if(isNaN(unitPrice)){
+            unitPrice = 0;
+          }
+          else{
+            unitPrice = parseFloat(unitPrice).toFixed(2);
+          }
+        }
+        return <>{unitPrice}</>
       }
     },
     {
@@ -60,7 +71,10 @@ function List() {
 
 
   return <>
-    <h1>Product List</h1>
+    <Stack direction="row" justifyContent="space-between" alignItems={"center"}>
+      <h1>Product List</h1>
+      <Link to="/products/add">Add New Product</Link>
+    </Stack>
     <hr />
     <div style={{ height: 400, width: '100%' }}>
       <DataGrid
