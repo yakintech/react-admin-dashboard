@@ -17,7 +17,9 @@ function List() {
 
     <h3>Total Price: {getTotalPrice().toFixed(2)}</h3>
     <Divider />
-    <Button variant="contained" color="error"  onClick={() => emptyCart()}>Empty</Button>
+    {
+      cart.length > 0 && <Button onClick={emptyCart}>Empty Cart</Button>
+    }
     <Divider />
 
     <ul>
