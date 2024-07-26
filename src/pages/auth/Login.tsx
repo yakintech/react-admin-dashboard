@@ -30,8 +30,8 @@ export default function Login() {
 
     LoginService(email!, password!)
       .then((res:any) => {
-        console.log("res", res)
-        
+      
+        localStorage.setItem("token", res.token)  
         dispatch({type:"auth/login", payload: {email: email, id: res.id}})
 
       })

@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import axios from "axios"
 
 interface AuthState {
     email: string,
@@ -11,6 +12,20 @@ const initialState: AuthState = {
     isLogin: false,
     id: 0
 }
+
+
+// const loginCheck = createAsyncThunk("auth/loginCheck", async () => {
+//     let token = localStorage.getItem("token")
+   
+//     if(token){
+//         let response = await axios.post("http://localhost:8080/check", {token})
+//         return response.data
+//     }
+//     else{
+//         return null
+//     }
+
+// })
 
 
 export const authSlice = createSlice({
