@@ -10,31 +10,31 @@ function List() {
     useEffect(() => {
 
         axiosInstance2.get("/orders")
-        .then((res) => {
-            setorders(res.data)
-        })
-        .catch((err) => {
-            console.log("errr", err)
-        })
+            .then((res) => {
+                setorders(res.data)
+            })
+            .catch((err) => {
+                console.log("errr", err)
+            })
 
     }, [])
 
-  return <>
- <DataGrid
-    rows={orders}
-    columns={[
-        { field: 'id', headerName: 'ID', width: 90 },
-        { field: 'customerId', headerName: 'Customer ID', width: 150 },
-        { field: 'employeeId', headerName: 'Employee ID', width: 150 },
-        { field: 'orderDate', headerName: 'Order Date', width: 150 },
-        { field: 'requiredDate', headerName: 'Required Date', width: 150 }
-    ]}
-    pageSize={5}
-    rowsPerPageOptions={[5]}
-    checkboxSelection
-    disableSelectionOnClick
-    />
-  </>
+    return <>
+        <DataGrid
+            rows={orders}
+            columns={[
+                { field: 'id', headerName: 'ID', width: 90 },
+                { field: 'customerId', headerName: 'Customer ID', width: 150 },
+                { field: 'employeeId', headerName: 'Employee ID', width: 150 },
+                { field: 'orderDate', headerName: 'Order Date', width: 150 },
+                { field: 'requiredDate', headerName: 'Required Date', width: 150 }
+            ]}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            checkboxSelection
+            disableSelectionOnClick
+        />
+    </>
 }
 
 export default List

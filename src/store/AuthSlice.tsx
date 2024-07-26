@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
 
 interface AuthState {
+    isloading: boolean,
     email: string,
     isLogin: boolean,
     id: number
@@ -10,38 +11,55 @@ interface AuthState {
 const initialState: AuthState = {
     email: "",
     isLogin: false,
-    id: 0
+    id: 0,
+    isloading: true
 }
 
 
-// const loginCheck = createAsyncThunk("auth/loginCheck", async () => {
-//     let token = localStorage.getItem("token")
-   
-//     if(token){
-//         let response = await axios.post("http://localhost:8080/check", {token})
-//         return response.data
-//     }
-//     else{
-//         return null
-//     }
 
-// })
+export const loginCheck = createAsyncThunk("auth/loginCheck", () => {
+    let token = localStorage.getItem("token")
+
+    return axios.get("http://localhost:8080/check", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    ).then(res => res.data)
+
+
+})
 
 
 export const authSlice = createSlice({
-    name:"auth",
+    name: "auth",
     initialState: initialState,
     reducers: {
-        login: (state:any, action:any) => {
+        login: (state: any, action: any) => {
             state.email = action.payload.email;
             state.isLogin = true;
             state.id = action.payload.id;
+            state.isloading = false;
         },
-        logout: (state:any) => {
+        logout: (state: any) => {
             state.email = "";
             state.isLogin = false;
             state.id = 0;
+            state.isloading = false;
         }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(loginCheck.fulfilled, (state, action) => {
+            state.isLogin = true;
+            state.isloading = false;
+        })
+        builder.addCase(loginCheck.rejected, (state, action) => {
+            state.isLogin = false;
+            state.isloading = false;
+        })
+        builder.addCase(loginCheck.pending, (state, action) => {
+            state.isloading = true;
+        })
     }
 })
 

@@ -17,8 +17,12 @@ const root = ReactDOM.createRoot(
 const store = configureStore({
   reducer: {
     auth: AuthReducer
+  },
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware()
   }
 })
+
 root.render(
   <Provider store={store}>
     <CartProvider>

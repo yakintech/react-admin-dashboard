@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 
     jwt.verify(token, secretKey, (err, user) => {
         if (err) {
-            return res.sendStatus(403)
+            return res.sendStatus(401)
         }
         req.user = user
        return next()
@@ -76,9 +76,9 @@ app.get("/orders", (req,res) => {
    return res.json(orders)
 })
 
-app.post("/check", (req, res) => {
+app.get("/check", (req, res) => {
     try {
-        return res.json()
+        return res.json({"message": "Check endpoint"})
     } catch (error) {
         return res.sendStatus(401)
     }
