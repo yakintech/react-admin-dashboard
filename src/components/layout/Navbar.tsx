@@ -4,10 +4,12 @@ import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { CartContext, CartContextType } from '../../context/CartContext'
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux'
 
 function Navbar() {
 
   const { i18n, t } = useTranslation()
+  let dispatch = useDispatch()
 
 
   const { cart } = useContext(CartContext) as CartContextType
@@ -23,17 +25,18 @@ function Navbar() {
     currentLang = "en"
   }
 
+  const logout = () => {
+    dispatch({ type: "auth/logout" })
+  }
+
 
   return <>
     <AppBar position="static">
       <Stack direction="row" justifyContent="space-evenly" sx={{ padding: "1%" }}>
         <Link style={{ color: "white", textDecoration: "none" }} to="/"><Typography variant="h5">{t("Home")}</Typography></Link>
         <Link style={{ color: "white", textDecoration: "none" }} to="/products"><Typography variant="h5">{t("Products")}</Typography></Link>
-        <Link style={{ color: "white", textDecoration: "none" }} to="/orders"><Typography variant="h5">{t("Orders")}</Typography></Link>
-       
+        <Link style={{ color: "white", textDecoration: "none" }} to="/orders"><Typography variant="h5">{t("Orders")} (JWT)</Typography></Link>
         <Link style={{ color: "white", textDecoration: "none" }} to="/todos"><Typography variant="h5">{t("Todos")}</Typography></Link>
-
-       
         <Link style={{ color: "white", textDecoration: "none" }} to="/cart">
           <Typography variant="h5">{t("Cart")}<span style={{ color: "red" }}>({cart.length})</span></Typography>
         </Link>
@@ -42,6 +45,7 @@ function Navbar() {
           <option value="en">EN</option>
           <option value="tr">TR</option>
         </select>
+        <Button variant="contained" color="error" onClick={() => logout()}>Logout</Button>
 
       </Stack>
     </AppBar>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { storageService } from "../../utils/storage/StorageHelper";
 
 export const axiosInstance2 = axios.create({
     baseURL: "http://localhost:8080"
@@ -7,7 +8,7 @@ export const axiosInstance2 = axios.create({
 //token request interceptor
 axiosInstance2.interceptors.request.use(
     (config) => {
-        let token = localStorage.getItem("token")
+        let token = storageService.get("token")
         if (token) {
             config.headers.Authorization = `Bearer ${token}`
         }
@@ -22,7 +23,7 @@ axiosInstance2.interceptors.response.use(
     },
     (error) => {
         if (error.response.status == 401) {
-            localStorage.removeItem("token")
+            storageService.remove("token")
             window.location.href = "/"
         }
         return Promise.reject(error)

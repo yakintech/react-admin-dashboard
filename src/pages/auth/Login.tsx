@@ -11,6 +11,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Copyright from './Copyright';
 import { LoginService } from '../../api/auth/loginService';
 import { useDispatch } from 'react-redux';
+import { storageService } from '../../utils/storage/StorageHelper';
 
 
 
@@ -31,8 +32,8 @@ export default function Login() {
     LoginService(email!, password!)
       .then((res:any) => {
       
-        localStorage.setItem("token", res.token)  
-        dispatch({type:"auth/login", payload: {email: email, id: res.id}})
+        storageService.save("token", res.token)
+        dispatch({type:"auth/login", payload: {email: email, id: res.id, roles: res.roles}})
 
       })
       .catch(err => {

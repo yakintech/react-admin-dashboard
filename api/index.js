@@ -16,24 +16,24 @@ app.use((req, res, next) => {
         return next()
     }
 
-   try {
-    const authHeader = req.headers["authorization"]
-    const token = authHeader && authHeader.split(" ")[1]
+    try {
+        const authHeader = req.headers["authorization"]
+        const token = authHeader && authHeader.split(" ")[1]
 
-    if (token == null) {
-        return res.sendStatus(401)
-    }
-
-    jwt.verify(token, secretKey, (err, user) => {
-        if (err) {
+        if (token == null) {
             return res.sendStatus(401)
         }
-        req.user = user
-       return next()
-    })
-   } catch (error) {
+
+        jwt.verify(token, secretKey, (err, user) => {
+            if (err) {
+                return res.sendStatus(401)
+            }
+            req.user = user
+            return next()
+        })
+    } catch (error) {
         return res.sendStatus(401)
-   }
+    }
 })
 
 
@@ -41,12 +41,14 @@ let users = [
     {
         "id": 1,
         "email": "aykut@mail.com",
-        "password": "123"
+        "password": "123",
+        "roles": ["editor"]
     },
     {
         "id": 2,
         "email": "cagatay@mail.com",
-        "password": "123"
+        "password": "123",
+        "roles": ["admin", "editor"]
     }
 ]
 
@@ -55,13 +57,14 @@ app.post("/login", (req, res) => {
     //user check
     let user = users.find(user => user.email === req.body.email && user.password === req.body.password)
     if (user) {
-       
+
         //JWT generate
         const token = jwt.sign(req.body.email, secretKey)
 
         res.json({
             "token": token,
-            "id": user.id
+            "id": user.id,
+            "roles": user.roles
         })
 
     } else {
@@ -72,13 +75,21 @@ app.post("/login", (req, res) => {
 })
 
 
-app.get("/orders", (req,res) => {
-   return res.json(orders)
+app.get("/orders", (req, res) => {
+    return res.json(orders)
 })
 
 app.get("/check", (req, res) => {
     try {
-        return res.json({"message": "Check endpoint"})
+        //get email from token
+        let email = jwt.verify(req.headers["authorization"].split(" ")[1], secretKey) 
+
+        let user = users.find(user => user.email == email)
+
+        return res.json({ 
+            "id": user.id,
+            "roles": user.roles
+         })
     } catch (error) {
         return res.sendStatus(401)
     }
