@@ -76,6 +76,14 @@ app.get("/orders", (req,res) => {
    return res.json(orders)
 })
 
+app.post("/check", (req, res) => {
+    try {
+        return res.json()
+    } catch (error) {
+        return res.sendStatus(401)
+    }
+})
+
 
 
 app.listen(8080, () => {
