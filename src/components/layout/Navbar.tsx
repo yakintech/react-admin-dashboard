@@ -29,7 +29,11 @@ function Navbar() {
       <Stack direction="row" justifyContent="space-evenly" sx={{ padding: "1%" }}>
         <Link style={{ color: "white", textDecoration: "none" }} to="/"><Typography variant="h5">{t("Home")}</Typography></Link>
         <Link style={{ color: "white", textDecoration: "none" }} to="/products"><Typography variant="h5">{t("Products")}</Typography></Link>
+        <Link style={{ color: "white", textDecoration: "none" }} to="/orders"><Typography variant="h5">{t("Orders")}</Typography></Link>
+       
         <Link style={{ color: "white", textDecoration: "none" }} to="/todos"><Typography variant="h5">{t("Todos")}</Typography></Link>
+
+       
         <Link style={{ color: "white", textDecoration: "none" }} to="/cart">
           <Typography variant="h5">{t("Cart")}<span style={{ color: "red" }}>({cart.length})</span></Typography>
         </Link>

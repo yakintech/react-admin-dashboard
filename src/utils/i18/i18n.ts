@@ -7,7 +7,8 @@ const resources = {
       "Home": "Home",
       "Products": "Products",
       "Cart": "Cart",
-      "Todos": "Todos"
+      "Todos": "Todos",
+      "Orders": "Orders"
     }
   },
   tr: {
@@ -15,7 +16,8 @@ const resources = {
         "Home": "Anasayfa",
         "Products": "Ürünler",
         "Cart": "Sepet",
-        "Todos": "Yapılacaklar"
+        "Todos": "Yapılacaklar",
+        "Orders": "Siparişler"
     }
   }
 };

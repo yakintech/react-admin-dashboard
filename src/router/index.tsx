@@ -3,6 +3,7 @@ import DashboardLayout from "../components/layout/DashboardLayout";
 import { productRoutes } from "../pages/product/routes";
 import { cartRoutes } from "../pages/cart/routes";
 import { todosRoutes } from "../pages/todos/routes";
+import { orderRoutes } from "../pages/order/routes";
 
 export const Router = () => {
     let routes = useRoutes([
@@ -16,7 +17,8 @@ export const Router = () => {
           children: [
            ...productRoutes,
            ...cartRoutes,
-           ...todosRoutes
+           ...todosRoutes,
+           ...orderRoutes
           ]
         }
       ])

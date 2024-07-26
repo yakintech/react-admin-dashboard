@@ -1,0 +1,2 @@
+npx json-server db.json
+Yukarıdaki kod ile sanal server ayağa kalkar
